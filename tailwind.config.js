@@ -13,7 +13,11 @@ export default {
         "DM-sans" : ["DM-sans","sans"]
       },
       screens:{
-        "xs" : "590px"
+        "xs" : "590px",
+        "xlg" : "1200px",
+        "xmd" : "900px",
+        "xsm" : "600px",
+        "xxs" : "480px"
       }
     },
   },
