@@ -1,4 +1,5 @@
 import { Card } from "../components/Card";
+import { Footer } from "../components/Footer";
 import { Hero } from "../components/Hero";
 
 export function Home(){
@@ -15,6 +16,7 @@ export function Home(){
         <section className="xlg:grid-cols-4 xmd:grid-cols-3 xsm:grid-cols-2 grid gap-16 min-[384px]:mx-16 grid-cols-1 mx-8 pb-20">
         <Card />
         </section>
+        <Footer />
         </>
     )
 }

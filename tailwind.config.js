@@ -10,7 +10,8 @@ export default {
         'hero' : "url('/assets/images/Hero.svg')" 
       },
       fontFamily:{
-        "DM-sans" : ["DM-sans","sans"]
+        "DM-sans" : ["DM-sans","sans"],
+        "poppins" : ["poppins","sans"]
       },
       screens:{
         "xs" : "590px",

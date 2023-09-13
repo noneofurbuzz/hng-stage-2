@@ -1,5 +1,6 @@
 import { useState,useEffect } from "react";
 import { options } from "../api/Api";
+import { NavLink } from "react-router-dom";
 
 export function Card(){
     const [trending,setTrending] = useState([])
@@ -27,7 +28,7 @@ export function Card(){
     useEffect(() => {
         getTrending()
         getGenre()
-        const data = localStorage.getItem("favourite")
+        
     },[])
     function addFavourite(index){
       setFavourite((favourite) => ({
@@ -56,9 +57,9 @@ export function Card(){
             </defs>
         </svg>
         </button>
-            <button className="overflow-hidden w-full">
+            <NavLink to={`/movies/${movies.id}`} className="overflow-hidden w-full">
             <img src={`https://www.themoviedb.org/t/p/original/${movies.poster_path}`} alt="movie-poster" data-testid = "movie-poster" className="max-w-full w-full object-cover hover:scale-110 ease-in-out duration-700 transition-all h-[23rem]" />
-            </button>
+            </NavLink>
             <p className="font-bold text-xs mt-2 text-gray-400"><span>USA, </span><span data-testid = "movie-release-date">{movies.release_date.slice(0,4)}</span></p>
             <p data-testid = "movie-title" className="font-bold mt-2 text-lg text-gray-900">{movies.title}</p>
             <div className="flex py-2 justify-between">
