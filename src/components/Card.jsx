@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import { options } from "../api/Api";
 import { NavLink } from "react-router-dom";
 
-export function Card(){
+export function Card(prop){
     const [trending,setTrending] = useState([])
     const [favourite,setFavourite] = useState({})
     const [genrelist,setGenreList] = useState([])
@@ -39,7 +39,7 @@ export function Card(){
     }
     return(
         <>
-        {trending.results !== undefined && trending.results.slice(0,10).map((movies,index) => {
+        {(prop.input !== "" ? prop.searchResults : trending).results !== undefined && (prop.input !== "" ? prop.searchResults : trending).results.slice(0,prop.input !== "" ? 20 : 10).map((movies,index) => {
             return(
         <section data-testid = "movie-card" key={index} className="mx-auto  w-full font-DM-sans">
         <button onClick = {() => addFavourite(index)} className = "active:scale-150 duration-700  ease-in-out float-right relative right-4 top-12 z-10"><svg width="30" className={`${(favourite[index])? "fill-rose-700" : "fill-[#f3f4f6]"}`} height="30" viewBox="0 0 30 30"  xmlns="http://www.w3.org/2000/svg">
@@ -57,8 +57,10 @@ export function Card(){
             </defs>
         </svg>
         </button>
-            <NavLink to={`/movies/${movies.id}`} className="overflow-hidden w-full">
+            <NavLink to={`/movies/${movies.id}`} className=" w-full">
+            <div className="w-full overflow-hidden">
             <img src={`https://www.themoviedb.org/t/p/original/${movies.poster_path}`} alt="movie-poster" data-testid = "movie-poster" className="max-w-full w-full object-cover hover:scale-110 ease-in-out duration-700 transition-all h-[23rem]" />
+            </div>
             </NavLink>
             <p className="font-bold text-xs mt-2 text-gray-400"><span>USA, </span><span data-testid = "movie-release-date">{movies.release_date.slice(0,4)}</span></p>
             <p data-testid = "movie-title" className="font-bold mt-2 text-lg text-gray-900">{movies.title}</p>

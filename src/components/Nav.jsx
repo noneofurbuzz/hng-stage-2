@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export function Nav(prop){
     return(
         <>
@@ -8,10 +10,10 @@ export function Nav(prop){
                 <h1 className="text-[#333333] font-bold text-xl font-DM-sans">MovieBox</h1>
                 <button onClick = {prop.handleShow} className={`sm:hidden`}><img src="/assets/images/X.svg" alt="close" /></button>
         </div>
-        <button className="flex items-center gap-4 py-4 ml-10 ">
+        <NavLink to="/" className="flex items-center gap-4 py-4 ml-10 ">
                 <img src="/assets/images/Home.svg" alt="home" className=""/>
                 <h1 className="text-[#666666] font-semibold font-poppins text-base ">Home</h1>
-        </button>
+        </NavLink>
         <button className="flex items-center gap-4 pl-10 py-4 border-r-[#be123c] border-r-4 backdrop-opacity-10 bg-opacity-10 bg-[#be123c] ">
                 <img src="/assets/images/movie-projector.svg" alt="projector" className=""/>
                 <h1 className="text-[#be123c] font-semibold font-poppins text-base m-0">Movies</h1>
