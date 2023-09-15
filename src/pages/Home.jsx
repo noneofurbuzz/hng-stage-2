@@ -5,6 +5,7 @@ import { Hero } from "../components/Hero";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { options } from "../api/Api";
 import { Error } from "../components/Error";
+import { useSearchParams } from "react-router-dom";
 
 export function Home(){
     const [searchResults,setSearchResults] = useState([])
@@ -12,6 +13,7 @@ export function Home(){
     const [cardLoading,setCardLoading] = useState(true)
     const [heroLoading,setHeroLoading] = useState(true)
     const [loading,setLoading] = useState(true)
+    let [searchParams, setSearchParams] = useSearchParams();
     const [search,setSearch] = useState(
         {input : ""}
     )
@@ -29,6 +31,8 @@ export function Home(){
         }
           setInput(search.input)
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+          
+        
       
     }
     function handleChange(event){
@@ -64,6 +68,7 @@ export function Home(){
     
     useEffect(() => {
         Search()
+        setSearchParams(input)
     },[input])
     return(
         <>
