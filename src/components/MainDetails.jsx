@@ -1,18 +1,21 @@
 import { useParams } from "react-router-dom";
 import { options } from "../api/Api";
 import { useEffect, useState } from "react";
-import { Footer } from "./Footer";
+import { DetailsLoader } from "./DetailsLoader";
+
 
 
 export function MainDetails(){
     const {id} = useParams()
     const [details,setDetails] = useState([])
+    const [loading,setLoading] = useState(true)
     const [video,setVideo] = useState([])
     function getDetails(){
         fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`,options)
        .then(response => response.json())
        .then((response) => {
         setDetails(response)
+        setLoading(false)
        })
        .catch(err => console.error(err));
     }
@@ -30,19 +33,26 @@ export function MainDetails(){
     },[])
 
     return(
+        <>
+        {loading ? <section className="w-full"><DetailsLoader /></section > : 
         <section className="mx-7 py-4 w-full mt-14 sm:mt-0 font-poppins">
         {video.results !== undefined && video.results.filter((trailer) => trailer.type == "Trailer").slice(0,1).map((videos,index) => {
             return(
                 <iframe key={index} src={`https://www.youtube.com/embed/${videos.key}`} className="w-full rounded-2xl sm:h-96 h-52 mb-6">
                 </iframe>
-                
             )
         })}
+         {(video.results !== undefined && video.results.filter((trailer) => trailer.type == "Trailer").slice(0,1).length === 0) && <div className="w-full flex justify-center items-center rounded-2xl sm:h-96 h-52 mb-6 bg-zinc-500 text-white ">
+            <span className="font-medium align-middle">No trailer available</span>
+            <svg className="fill-white ml-1 mb-1 w-4 max-w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><style>svg</style><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM159.3 388.7c-2.6 8.4-11.6 13.2-20 10.5s-13.2-11.6-10.5-20C145.2 326.1 196.3 288 256 288s110.8 38.1 127.3 91.3c2.6 8.4-2.1 17.4-10.5 20s-17.4-2.1-20-10.5C340.5 349.4 302.1 320 256 320s-84.5 29.4-96.7 68.7zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+            </div>
+         
+        }
         {details !== undefined && 
         <section className="flex justify-between flex-wrap">
         <div className="text-[#404040] font-medium text-2xl ">
             <div className="inline">
-            <p className="inline">{details.original_title}</p>
+            <p className="inline" data-testid = "movie-title">{details.original_title}</p>
             </div>
             <div className="inline whitespace-nowrap">
             <span> • </span>
@@ -72,8 +82,8 @@ export function MainDetails(){
         </div>
         </section>}
         {details !== undefined && 
-        <section className="flex xl:flex-row flex-col font-poppins">
-            <div>
+        <section className="flex xl:flex-row flex-col font-poppins justify-between ">
+            <div className="xl:w-[40rem]">
                 <p data-testid = "movie-overview" className="py-5 text-[#333333] ">{details.overview}</p>
                 <p className="text-[#333333] mb-5">Director : <span className="text-[#be123c]">Joseph Kosinski</span></p>
                 <p className="text-[#333333] mb-5">Writers :  <span className="text-[#be123c]">Jim Cash, Jack Epps Jr,  Peter Craig</span></p>
@@ -86,7 +96,7 @@ export function MainDetails(){
                 </button>
                 </div>
             </div>
-            <div className="font-medium xl:w-4/5 w-full pt-5 xl:ml-3">
+            <div className="font-medium pt-5 xl:ml-3">
                 <button className="bg-[#be123c] flex item-center rounded-lg w-full justify-center py-2">
                     <img src="/assets/images/tickets.svg" alt="ticket"className="mr-2"/>
                     <span className="text-white">See Showtimes</span>
@@ -95,10 +105,11 @@ export function MainDetails(){
                 <img src="/assets/images/List.svg" alt="ticket"className="mr-2"/>
                 <span className="text-[#333333]">More watch options</span>
                 </button>
-                <img src="/assets/images/group.svg" alt="group" className="w-[30rem] xl:float-right max-w-full mt-8"/>
+                <img src="/assets/images/group.svg" alt="group" className="w-[25rem] xl:float-right max-w-full mt-8"/>
             </div>
         </section>}
         
-        </section>
+        </section>}
+        </>
     )
 }

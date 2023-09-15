@@ -1,11 +1,16 @@
 import { useState,useEffect } from "react";
 import { options } from "../api/Api";
 import { NavLink } from "react-router-dom";
+import 'react-loading-skeleton/dist/skeleton.css'
+import { CardSkeleton } from "./Cardskeleton";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function Card(prop){
     const [trending,setTrending] = useState([])
-    const [favourite,setFavourite] = useState({})
+    const [favourite,setFavourite] = useState(JSON.parse(localStorage.getItem("saved")) || {})
     const [genrelist,setGenreList] = useState([])
+    const [saved,setSaved] = useState(JSON.parse(localStorage.getItem("saved")) || null)
 
 
     function getTrending(){
@@ -13,6 +18,7 @@ export function Card(prop){
        .then(response => response.json())
        .then((response) => {
         setTrending(response)
+        prop.setCardLoading(false)
        })
        .catch(err => console.error(err));
     }
@@ -22,6 +28,7 @@ export function Card(prop){
       .then(response => response.json())
       .then((response) => {
         setGenreList(response)
+     
        })
       .catch(err => console.error(err));
     }
@@ -30,19 +37,34 @@ export function Card(prop){
         getGenre()
         
     },[])
-    function addFavourite(index){
+    function addFavourite(id){
       setFavourite((favourite) => ({
         ...favourite,
-        [index] : !favourite[index]
+        [id] : !favourite[id]
       }))
-      console.log(favourite)
+      
+      if (favourite[id] !== true){
+        toast('Added to favourites !', {
+          position: toast.POSITION.TOP_CENTER,
+          className : "toast-message",
+          progressClassName:"progress-bar",
+          icon : "❤️"
+      });
+      }
     }
+
+   useEffect(() => {
+    localStorage.setItem("saved",JSON.stringify(favourite))
+    setSaved(JSON.parse(localStorage.getItem("saved")))
+   },[favourite])
+  
     return(
         <>
+        {prop.cardLoading && <CardSkeleton cards = {10} />}
         {(prop.input !== "" ? prop.searchResults : trending).results !== undefined && (prop.input !== "" ? prop.searchResults : trending).results.slice(0,prop.input !== "" ? 20 : 10).map((movies,index) => {
             return(
         <section data-testid = "movie-card" key={index} className="mx-auto  w-full font-DM-sans">
-        <button onClick = {() => addFavourite(index)} className = "active:scale-150 duration-700  ease-in-out float-right relative right-4 top-12 z-10"><svg width="30" className={`${(favourite[index])? "fill-rose-700" : "fill-[#f3f4f6]"}`} height="30" viewBox="0 0 30 30"  xmlns="http://www.w3.org/2000/svg">
+        <button onClick = {() => addFavourite(movies.id)} className = "active:scale-150 duration-700  ease-in-out float-right relative right-4 top-12 z-10"><svg width="30" className={`${(movies.id in saved && saved[`${movies.id}`] == true) ? "fill-rose-700" : "fill-[#f3f4f6]"}`} height="30" viewBox="0 0 30 30"  xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_b_2803_78)">
             <ellipse cx="15" cy="15.1842" rx="15" ry="14.6053" fillOpacity="0.5"/>
             </g>
@@ -59,10 +81,10 @@ export function Card(prop){
         </button>
             <NavLink to={`/movies/${movies.id}`} className=" w-full">
             <div className="w-full overflow-hidden">
-            <img src={`https://www.themoviedb.org/t/p/original/${movies.poster_path}`} alt="movie-poster" data-testid = "movie-poster" className="max-w-full w-full object-cover hover:scale-110 ease-in-out duration-700 transition-all h-[23rem]" />
+            <img src={movies.poster_path !== null ? `https://www.themoviedb.org/t/p/original/${movies.poster_path}` : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"} alt="movie-poster" data-testid = "movie-poster" className="max-w-full w-full object-cover hover:scale-110 ease-in-out duration-700 transition-all h-[23rem]" />
             </div>
             </NavLink>
-            <p className="font-bold text-xs mt-2 text-gray-400"><span>USA, </span><span data-testid = "movie-release-date">{movies.release_date.slice(0,4)}</span></p>
+            <p className="font-bold text-xs mt-2 text-gray-400"><span>USA, </span><span data-testid = "movie-release-date">{movies.release_date}</span></p>
             <p data-testid = "movie-title" className="font-bold mt-2 text-lg text-gray-900">{movies.title}</p>
             <div className="flex py-2 justify-between">
                 <div className="flex gap-2">
@@ -88,9 +110,12 @@ export function Card(prop){
               <span key={index}>{genre.name}</span>
             )})}
             </p>
+            <ToastContainer progressClassName="progress-bar" />
         </section>
+
           )
         })}
+        
         </>
     )
 }

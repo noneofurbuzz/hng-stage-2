@@ -73,4 +73,52 @@ body{
 	-webkit-animation: slide-in-left-out 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) reverse both;
 	        animation: slide-in-left-out 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) reverse both;
 }
-  
+.spinner {
+  animation: rotate 2s linear infinite;
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+  width: 50px;
+  height: 50px; 
+}
+.spinner2{
+  animation: rotate 2s linear infinite;
+  z-index: 2;
+  position: absolute;
+  margin: -25px 0 0 -25px;
+  top: 50%;
+  width: 50px;
+  height: 50px; 
+}
+.path {
+  stroke: rgb(190 18 60);
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+.progress-bar{
+  background: red;
+}

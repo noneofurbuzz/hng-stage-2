@@ -1,8 +1,7 @@
-import { useParams } from "react-router-dom"
 import { Nav } from "../components/Nav"
 import { useState } from "react"
 import { MainDetails } from "../components/MainDetails"
-import { Footer } from "../components/Footer"
+
 
 export function Details(){
     const [show,setShow] = useState()

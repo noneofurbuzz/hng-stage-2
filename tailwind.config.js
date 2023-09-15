@@ -18,7 +18,8 @@ export default {
         "xlg" : "1200px",
         "xmd" : "900px",
         "xsm" : "600px",
-        "xxs" : "480px"
+        "xxs" : "480px",
+        
       }
     },
   },
