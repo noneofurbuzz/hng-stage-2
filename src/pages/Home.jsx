@@ -68,7 +68,6 @@ export function Home(){
     
     useEffect(() => {
         Search()
-        setSearchParams(input)
     },[input])
     return(
         <>
